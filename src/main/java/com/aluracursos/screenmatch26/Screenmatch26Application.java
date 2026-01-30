@@ -6,8 +6,8 @@ import com.aluracursos.screenmatch26.model.DatosTemporada;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import service.ConsumoAPI;
-import service.ConvierteDatos;
+import com.aluracursos.screenmatch26.service.ConsumoAPI;
+import com.aluracursos.screenmatch26.service.ConvierteDatos;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package service;
+package com.aluracursos.screenmatch26.service;
 
 import java.io.IOException;
 import java.net.URI;
