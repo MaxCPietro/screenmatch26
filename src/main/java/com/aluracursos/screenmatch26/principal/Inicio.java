@@ -1,5 +1,6 @@
 package com.aluracursos.screenmatch26.principal;
 
+import com.aluracursos.screenmatch26.model.DatosEpisodio;
 import com.aluracursos.screenmatch26.model.DatosSerie;
 import com.aluracursos.screenmatch26.model.DatosTemporada;
 import com.aluracursos.screenmatch26.service.ConsumoAPI;
@@ -36,14 +37,23 @@ public class Inicio {
 
         for (int i = 1; i <= datos.TotalDeTemporadas(); i++) {
             json = consumoAPI.obtenerDatos(
-                    URL_BASE+nombreSerie.replace(" ", "+")
-                    +"&Season="+i +API_KEY);
+                    URL_BASE + nombreSerie.replace(" ", "+")
+                            + "&Season=" + i + API_KEY);
             DatosTemporada temporada = conversor.obtenerDatos(json, DatosTemporada.class);
             temporadas.add(temporada);
             //System.out.println("******DATOS SERIALIZADOS TEMPORADA******");
-            System.out.println("datos TEMPORADA: " + temporada);
+            //System.out.println("datos TEMPORADA: " + temporada);
         }
+        //Mostrar solo el título de los episodios para las temporadas
+        /*for (int j = 1; j< datos.TotalDeTemporadas(); j++) {
+            List<DatosEpisodio> episodiosTemporadas = temporadas.get(j).episodio();
+            for (int k = 1; k < episodiosTemporadas.size(); k++) {
+                System.out.println("Titulo del episodio:"+  k + " "+ episodiosTemporadas.get(k).Titulo());
+            }
+        }*/
 
+        temporadas.forEach(t ->t.episodio().forEach(e-> System.out.println(
+                    "episodio: "+ e.numeroEpisodio() + " " + e.Titulo() )));
 
 
     }
