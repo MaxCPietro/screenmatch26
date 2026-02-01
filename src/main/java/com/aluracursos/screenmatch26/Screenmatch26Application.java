@@ -3,6 +3,7 @@ package com.aluracursos.screenmatch26;
 import com.aluracursos.screenmatch26.model.DatosEpisodio;
 import com.aluracursos.screenmatch26.model.DatosSerie;
 import com.aluracursos.screenmatch26.model.DatosTemporada;
+import com.aluracursos.screenmatch26.principal.EjemploStreams;
 import com.aluracursos.screenmatch26.principal.Inicio;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

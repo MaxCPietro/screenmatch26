@@ -3,12 +3,17 @@ package com.aluracursos.screenmatch26.principal;
 import com.aluracursos.screenmatch26.model.DatosEpisodio;
 import com.aluracursos.screenmatch26.model.DatosSerie;
 import com.aluracursos.screenmatch26.model.DatosTemporada;
+import com.aluracursos.screenmatch26.model.Episodio;
 import com.aluracursos.screenmatch26.service.ConsumoAPI;
 import com.aluracursos.screenmatch26.service.ConvierteDatos;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 //mostrar un menu para que usuario ingrese una serie
 public class Inicio {
@@ -26,7 +31,7 @@ public class Inicio {
         String nombreSerie = teclado.nextLine();
         String json = consumoAPI.obtenerDatos(URL_BASE+nombreSerie.replace(" ", "+")+API_KEY);
         System.out.println("******DATOS API******");
-        System.out.println("datos Json:" + json);
+        System.out.println("datos Json:" + json+"\n");
 
         var datos = conversor.obtenerDatos(json, DatosSerie.class);
 
@@ -41,8 +46,8 @@ public class Inicio {
                             + "&Season=" + i + API_KEY);
             DatosTemporada temporada = conversor.obtenerDatos(json, DatosTemporada.class);
             temporadas.add(temporada);
-            //System.out.println("******DATOS SERIALIZADOS TEMPORADA******");
-            //System.out.println("datos TEMPORADA: " + temporada);
+            /*System.out.println("******DATOS SERIALIZADOS TEMPORADA******");
+            System.out.println("datos TEMPORADA: " + temporada);*/
         }
         //Mostrar solo el título de los episodios para las temporadas
         /*for (int j = 1; j< datos.TotalDeTemporadas(); j++) {
@@ -52,9 +57,49 @@ public class Inicio {
             }
         }*/
 
-        temporadas.forEach(t ->t.episodio().forEach(e-> System.out.println(
-                    "episodio: "+ e.numeroEpisodio() + " " + e.Titulo() )));
+        //Muestra datos de solo el titulo de los episodios de las temporadas usando expresiones lambdas
+        /*temporadas.forEach(t ->t.episodio().forEach(e-> System.out.println(
+                    "episodio: "+ e.numeroEpisodio() + " " + e.Titulo() )));*/
+
+        //Convertir todas las informaciones a una unica lista del tipo datos episodio usando expresiones lambdas
+        List<DatosEpisodio> datosEpisodios = temporadas.stream()
+                                                       .flatMap(lu -> lu.episodio().stream())
+                                                       .collect(Collectors.toList());
+        //datosEpisodios.forEach(System.out::println);
+
+        //Top 5 Episodios
+        System.out.println("top 5 Episodios de la serie: " + nombreSerie);
+        datosEpisodios.stream()
+                      .filter(e->!e.evaluacion().equalsIgnoreCase("N/A"))
+                      .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                      .limit(5)
+                      .forEach(System.out::println);
 
 
+        //Conviertiendo los datos a lista de tipo episodio.
+        List<Episodio> episodio = temporadas.stream()
+                                    .flatMap(t->t.episodio().stream()
+                                    .map(d -> new Episodio(t.numero(),d)))
+                                    .collect(Collectors.toList());
+
+        episodio.forEach((System.out::println));
+
+        //Busqueda de Episodios a partir de x año
+        System.out.println("Indica el año a partir del año a partir del cual quieres ver los episodios: ");
+        var fecha = teclado.nextInt();
+        teclado.nextLine();
+
+        LocalDate fechaBusqueda = LocalDate.of(fecha, 1, 1);
+
+        //Formateo la fecha a tiempo local
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MMM/yyyy");
+
+        episodio.stream()
+                .filter(e->(e.getFechaDeLanzamiento()!= null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda)))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada() + " " +
+                        "Episodio: "  + e.getTitulo() + " " +
+                        "Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(formatter)
+                ));
     }
 }
