@@ -9,10 +9,7 @@ import com.aluracursos.screenmatch26.service.ConvierteDatos;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 //mostrar un menu para que usuario ingrese una serie
@@ -46,20 +43,20 @@ public class Inicio {
                             + "&Season=" + i + API_KEY);
             DatosTemporada temporada = conversor.obtenerDatos(json, DatosTemporada.class);
             temporadas.add(temporada);
-            /*System.out.println("******DATOS SERIALIZADOS TEMPORADA******");
-            System.out.println("datos TEMPORADA: " + temporada);*/
+            //System.out.println("******DATOS SERIALIZADOS TEMPORADA******");
+            //System.out.println("datos TEMPORADA: " + temporada);
         }
         //Mostrar solo el título de los episodios para las temporadas
         /*for (int j = 1; j< datos.TotalDeTemporadas(); j++) {
             List<DatosEpisodio> episodiosTemporadas = temporadas.get(j).episodio();
             for (int k = 1; k < episodiosTemporadas.size(); k++) {
-                System.out.println("Titulo del episodio:"+  k + " "+ episodiosTemporadas.get(k).Titulo());
+                System.out.println("Titulo del episodio:"+  k + " "+ episodiosTemporadas.get(k).titulo());
             }
         }*/
 
         //Muestra datos de solo el titulo de los episodios de las temporadas usando expresiones lambdas
         /*temporadas.forEach(t ->t.episodio().forEach(e-> System.out.println(
-                    "episodio: "+ e.numeroEpisodio() + " " + e.Titulo() )));*/
+                    "episodio: "+ e.numeroEpisodio() + " " + e.titulo() )));*/
 
         //Convertir todas las informaciones a una unica lista del tipo datos episodio usando expresiones lambdas
         List<DatosEpisodio> datosEpisodios = temporadas.stream()
@@ -68,12 +65,12 @@ public class Inicio {
         //datosEpisodios.forEach(System.out::println);
 
         //Top 5 Episodios
-        System.out.println("top 5 Episodios de la serie: " + nombreSerie);
+        /*System.out.println("top 5 Episodios de la serie: " + nombreSerie);
         datosEpisodios.stream()
                       .filter(e->!e.evaluacion().equalsIgnoreCase("N/A"))
                       .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
                       .limit(5)
-                      .forEach(System.out::println);
+                      .forEach(System.out::println);*/
 
 
         //Conviertiendo los datos a lista de tipo episodio.
@@ -82,10 +79,10 @@ public class Inicio {
                                     .map(d -> new Episodio(t.numero(),d)))
                                     .collect(Collectors.toList());
 
-        episodio.forEach((System.out::println));
+        //episodio.forEach((System.out::println));
 
         //Busqueda de Episodios a partir de x año
-        System.out.println("Indica el año a partir del año a partir del cual quieres ver los episodios: ");
+        /*System.out.println("Indica el año a partir del año a partir del cual quieres ver los episodios: ");
         var fecha = teclado.nextInt();
         teclado.nextLine();
 
@@ -100,6 +97,22 @@ public class Inicio {
                         "Temporada: " + e.getTemporada() + " " +
                         "Episodio: "  + e.getTitulo() + " " +
                         "Fecha de Lanzamiento: " + e.getFechaDeLanzamiento().format(formatter)
-                ));
+
+                ));*/
+
+        //Busca episodio por pedazo de titulo
+        System.out.println("Escriba el 'pedazo' de titulo del episodio que desea ver");
+        var pedazoTitulo = teclado.nextLine().toLowerCase().trim();
+        Optional<Episodio> episodioBuscado= episodio.stream()
+                                                .filter(e->e.getTitulo() != null && !e.getTitulo().isEmpty())
+                                                .filter(e ->e.getTitulo().toLowerCase().contains(pedazoTitulo))
+                                                .findFirst();
+        if (episodioBuscado.isPresent()) {
+            System.out.println("Episodio Encontrado");
+            System.out.println("Los datos son: "+ episodioBuscado.get());
+        } else  {
+            System.out.println("Episodio no encontrado");
+        }
+
     }
 }
