@@ -101,7 +101,7 @@ public class Inicio {
                 ));*/
 
         //Busca episodio por pedazo de titulo
-        System.out.println("Escriba el 'pedazo' de titulo del episodio que desea ver");
+        /*System.out.println("Escriba el 'pedazo' de titulo del episodio que desea ver");
         var pedazoTitulo = teclado.nextLine().toLowerCase().trim();
         Optional<Episodio> episodioBuscado= episodio.stream()
                                                 .filter(e->e.getTitulo() != null && !e.getTitulo().isEmpty())
@@ -112,7 +112,22 @@ public class Inicio {
             System.out.println("Los datos son: "+ episodioBuscado.get());
         } else  {
             System.out.println("Episodio no encontrado");
-        }
+        }*/
+
+        //Creando estadísticas para cada temporada
+        /*Map<Integer, Double> evaluacionesPorTemporada = episodio.stream()
+                                                                .filter(e->e.getEvaluacion()>0.0)
+                                                                .collect(Collectors.groupingBy(Episodio::getTemporada
+                                                                        , Collectors.averagingDouble(Episodio::getEvaluacion)));
+        System.out.println("Evaluaciones por Temporada: "+ evaluacionesPorTemporada);*/
+
+        //10 Creando estadística básicas
+        DoubleSummaryStatistics est =  episodio.stream()
+                                               .filter(e->e.getEvaluacion()>0.0)
+                                               .collect(Collectors.summarizingDouble(Episodio::getEvaluacion));
+        System.out.println("Media de las Evaluaciones: "+ est.getAverage());
+        System.out.println("Episodio mejor Evaluado: "+ est.getMax());
+        System.out.println("Episodio peor evaluado: "+ est.getMin());
 
     }
 }
