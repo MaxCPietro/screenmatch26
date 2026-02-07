@@ -37,7 +37,7 @@ public class Inicio {
         // ✅ CORRECTO
         List<DatosTemporada> temporadas = new ArrayList<>();
 
-        for (int i = 1; i <= datos.TotalDeTemporadas(); i++) {
+        for (int i = 1; i <= datos.totalDeTemporadas(); i++) {
             json = consumoAPI.obtenerDatos(
                     URL_BASE + nombreSerie.replace(" ", "+")
                             + "&Season=" + i + API_KEY);
