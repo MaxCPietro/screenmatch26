@@ -2,12 +2,17 @@ package com.aluracursos.screenmatch26.principal;
 
 import com.aluracursos.screenmatch26.model.DatosSerie;
 import com.aluracursos.screenmatch26.model.DatosTemporada;
+import com.aluracursos.screenmatch26.model.Serie;
 import com.aluracursos.screenmatch26.service.ConsumoAPI;
 import com.aluracursos.screenmatch26.service.ConvierteDatos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
 
 public class Inicio2 {
         private Scanner teclado = new Scanner(System.in);
@@ -15,6 +20,7 @@ public class Inicio2 {
         private final String URL_BASE = "https://www.omdbapi.com/?t=";
         private final String API_KEY = "&apikey=93082e3f";
         private ConvierteDatos conversor = new ConvierteDatos();
+        private List <DatosSerie> listaDatosSeries = new ArrayList<>();
 
         public void muestraElMenu2() {
             var opcion = -1;
@@ -37,6 +43,9 @@ public class Inicio2 {
                     case 2:
                         buscarEpisodioPorSerie();
                         break;
+                    case 3:
+                        mostrarSeriesBuscadas();
+                        break;
 
                     case 0:
                         System.out.println("Cerrando la aplicación...");
@@ -47,8 +56,7 @@ public class Inicio2 {
             }
 
         }
-
-        private DatosSerie getDatosSerie() {
+    private DatosSerie getDatosSerie() {
             System.out.println("Escribe el nombre de la serie que deseas buscar");
             var nombreSerie = teclado.nextLine();
             var json = consumoApi.obtenerDatos(URL_BASE + nombreSerie.replace(" ", "+") + API_KEY);
@@ -68,9 +76,26 @@ public class Inicio2 {
             temporadas.forEach(System.out::println);
         }
         private void buscarSerieWeb() {
-            DatosSerie datos = getDatosSerie();
+            DatosSerie datos  = getDatosSerie();
+            listaDatosSeries.add(datos);
             System.out.println(datos);
         }
+
+        private void mostrarSeriesBuscadas() {
+            List <Serie> listaseries = new ArrayList<>();
+            listaseries = listaDatosSeries.stream()
+                .map(s -> new Serie(s))
+                    .collect(Collectors.toList());
+
+            listaseries.stream()
+                    .sorted(Comparator.comparing(Serie::getGenero))
+                    .forEach(System.out::println);
+        }
+
+
+
+
+
 
 
 
