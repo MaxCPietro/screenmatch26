@@ -90,12 +90,14 @@ public class Inicio2 {
         }
 
         private void mostrarSeriesBuscadas() {
-            List <Serie> listaseries = new ArrayList<>();
+            List<Serie> series = repository.findAll();
+
+            /*List <Serie> listaseries = new ArrayList<>();
             listaseries = listaDatosSeries.stream()
                 .map(s -> new Serie(s))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
 
-            listaseries.stream()
+            series.stream()
                     .sorted(Comparator.comparing(Serie::getGenero))
                     .forEach(System.out::println);
         }
