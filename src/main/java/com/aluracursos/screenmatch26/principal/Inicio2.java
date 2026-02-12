@@ -34,6 +34,7 @@ public class Inicio2 {
                     1 - Buscar series 
                     2 - Buscar episodios
                     3 - Mostrar series buscadas
+                    4 - Buscar Series por Titulo
                                   
                     0 - Salir
                     """;
@@ -51,7 +52,9 @@ public class Inicio2 {
                     case 3:
                         mostrarSeriesBuscadas();
                         break;
-
+                    case 4:
+                        buscarSeriesPorTitulo();
+                        break;
                     case 0:
                         System.out.println("Cerrando la aplicación...");
                         break;
@@ -122,12 +125,17 @@ public class Inicio2 {
                     .sorted(Comparator.comparing(Serie::getGenero))
                     .forEach(System.out::println);
         }
+    //Opcion 4
+    private void buscarSeriesPorTitulo() {
+        System.out.println("Escribe el nombre de la serie que quieres buscar en la BDD:");
+        var nombreSerie = teclado.nextLine();
 
+        Optional<Serie> serieBuscada = repository.findByTituloContainsIgnoreCase(nombreSerie.toLowerCase());
 
-
-
-
-
-
-
+        if (serieBuscada.isPresent()) {
+            System.out.println("la serie buscada es: " + serieBuscada.get().getTitulo());
+        } else {
+            System.out.println("Serie no encontrada");
+        }
+    }
 }
