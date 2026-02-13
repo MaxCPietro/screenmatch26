@@ -34,6 +34,7 @@ public class Inicio2 {
                     4 - Buscar Series por Titulo
                     5 - Top 5 Mejores Series
                     6 - Buscar Series por Categoría
+                    7 - Filtrar Series por #Temporadas y Rating
                                   
                     0 - Salir
                     """;
@@ -59,6 +60,9 @@ public class Inicio2 {
                         break;
                     case 6:
                         buscarSeriesPorCategoria();
+                        break;
+                    case 7:
+                        filtrarSeriesPorTemporadaYEvaluacion();
                         break;
                     case 0:
                         System.out.println("Cerrando la aplicación...");
@@ -148,7 +152,7 @@ public class Inicio2 {
     private void buscarTop5Series() {
         List <Serie> topSerie = repository.findTop5ByOrderByEvaluacionDesc();
         topSerie.forEach(s->
-                System.out.println("Serie: " + s.getTitulo() + "Evaluacion: " + s.getEvaluacion()));
+                System.out.println("Serie: " + s.getTitulo() + " -> Rating: " + s.getEvaluacion()));
     }
 
     //Opcion 6
@@ -160,6 +164,18 @@ public class Inicio2 {
         System.out.println("Las series de la categoría: " + genero);
         seriesPorCategoria.forEach(s-> System.out.println(s.getTitulo()));
         //seriesPorCategoria.forEach(System.out::println);
+    }
 
+    //Opción 7 - Filtrar Series por #Temporadas y Rating
+    public void filtrarSeriesPorTemporadaYEvaluacion() {
+        System.out.println("Filtrar series con cuántas temporadas?:");
+        var totalTemporadas = teclado.nextInt();
+        teclado.nextLine();
+        System.out.println("¿Con Rating a partir de cual valor?");
+        var evaluacion = teclado.nextDouble();
+        teclado.nextLine();
+        List<Serie> filtroSeries = repository.seriePorTemporadaYEvaluacion(totalTemporadas,evaluacion);
+        System.out.println("***SERIES FILTRADAS***");
+        filtroSeries.forEach(s-> System.out.println(s.getTitulo()+" TEMPORADAS:"+s.getTotalDeTemporadas()+" RATING:"+s.getEvaluacion()));
     }
 }

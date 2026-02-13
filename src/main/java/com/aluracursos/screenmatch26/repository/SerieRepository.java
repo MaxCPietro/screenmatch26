@@ -3,6 +3,7 @@ package com.aluracursos.screenmatch26.repository;
 import com.aluracursos.screenmatch26.model.Categoria;
 import com.aluracursos.screenmatch26.model.Serie;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,7 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     List<Serie> findTop5ByOrderByEvaluacionDesc();
 
     List<Serie> findByGenero(Categoria categoria);
+
+    @Query("SELECT s FROM Serie s WHERE s.totalDeTemporadas >= :totalTemporadas AND s.evaluacion >= :evaluacion")
+    List<Serie>seriePorTemporadaYEvaluacion(int totalTemporadas, Double evaluacion);
 }
