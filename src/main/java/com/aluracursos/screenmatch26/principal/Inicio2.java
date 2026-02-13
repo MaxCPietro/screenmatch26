@@ -1,9 +1,6 @@
 package com.aluracursos.screenmatch26.principal;
 
-import com.aluracursos.screenmatch26.model.DatosSerie;
-import com.aluracursos.screenmatch26.model.DatosTemporada;
-import com.aluracursos.screenmatch26.model.Episodio;
-import com.aluracursos.screenmatch26.model.Serie;
+import com.aluracursos.screenmatch26.model.*;
 import com.aluracursos.screenmatch26.repository.SerieRepository;
 import com.aluracursos.screenmatch26.service.ConsumoAPI;
 import com.aluracursos.screenmatch26.service.ConvierteDatos;
@@ -36,6 +33,7 @@ public class Inicio2 {
                     3 - Mostrar series buscadas
                     4 - Buscar Series por Titulo
                     5 - Top 5 Mejores Series
+                    6 - Buscar Series por Categoría
                                   
                     0 - Salir
                     """;
@@ -59,7 +57,9 @@ public class Inicio2 {
                     case 5:
                         buscarTop5Series();
                         break;
-
+                    case 6:
+                        buscarSeriesPorCategoria();
+                        break;
                     case 0:
                         System.out.println("Cerrando la aplicación...");
                         break;
@@ -149,5 +149,17 @@ public class Inicio2 {
         List <Serie> topSerie = repository.findTop5ByOrderByEvaluacionDesc();
         topSerie.forEach(s->
                 System.out.println("Serie: " + s.getTitulo() + "Evaluacion: " + s.getEvaluacion()));
+    }
+
+    //Opcion 6
+    private void buscarSeriesPorCategoria() {
+        System.out.println("Escriba el género de la serie que desea buscar:");
+        var genero = teclado.nextLine();
+        var categoria = Categoria.fromEspanol(genero);
+        List<Serie> seriesPorCategoria = repository.findByGenero(categoria);
+        System.out.println("Las series de la categoría: " + genero);
+        seriesPorCategoria.forEach(s-> System.out.println(s.getTitulo()));
+        //seriesPorCategoria.forEach(System.out::println);
+
     }
 }
