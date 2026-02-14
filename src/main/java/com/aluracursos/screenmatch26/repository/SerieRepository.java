@@ -27,4 +27,14 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
             WHERE LOWER(e.titulo) LIKE LOWER(CONCAT('%', :nombreEpisodio, '%'))
            """)
     List<Episodio>episodiosPorNombre(String nombreEpisodio);
+
+    @Query("""
+           SELECT e
+           FROM Serie s
+           JOIN s.episodios e
+           WHERE s = :serie
+           ORDER BY e.evaluacion DESC
+           LIMIT 5
+            """)
+    List<Episodio>top5Episdios(Serie serie);
 }
