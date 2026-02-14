@@ -28,13 +28,14 @@ public class Inicio2 {
             var opcion = -1;
             while (opcion != 0) {
                 var menu = """
-                    1 - Buscar series 
-                    2 - Buscar episodios
+                    1 - Insertar serie en la BDD
+                    2 - Insertar episodios la BDD
                     3 - Mostrar series buscadas
                     4 - Buscar Series por Titulo
                     5 - Top 5 Mejores Series
                     6 - Buscar Series por Categoría
                     7 - Filtrar Series por #Temporadas y Rating
+                    8 - Buscar Episodios por Título
                                   
                     0 - Salir
                     """;
@@ -63,6 +64,9 @@ public class Inicio2 {
                         break;
                     case 7:
                         filtrarSeriesPorTemporadaYEvaluacion();
+                        break;
+                    case 8:
+                        buscarEpisodiosPorTitulos();
                         break;
                     case 0:
                         System.out.println("Cerrando la aplicación...");
@@ -177,5 +181,16 @@ public class Inicio2 {
         List<Serie> filtroSeries = repository.seriePorTemporadaYEvaluacion(totalTemporadas,evaluacion);
         System.out.println("***SERIES FILTRADAS***");
         filtroSeries.forEach(s-> System.out.println(s.getTitulo()+" TEMPORADAS:"+s.getTotalDeTemporadas()+" RATING:"+s.getEvaluacion()));
+    }
+
+    //Opcion 8 - Buscar Episodios por Título
+    private void buscarEpisodiosPorTitulos() {
+        System.out.println("Escribe el nombre el nombre del episodio que deseas buscar :");
+        var nombreEpisodio = teclado.nextLine();
+        List<Episodio> episodiosEcontrados = repository.episodiosPorNombre(nombreEpisodio);
+        episodiosEcontrados.forEach(e->
+                System.out.printf("Serie %s Temporada %s Episoio %s Evaluacion %s \n",
+                        e.getSerie().getTitulo(),e.getTemporada(),e.getNumeroEpisodio(),e.getEvaluacion()));
+
     }
 }
