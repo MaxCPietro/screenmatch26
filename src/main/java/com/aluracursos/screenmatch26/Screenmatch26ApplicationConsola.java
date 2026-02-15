@@ -1,4 +1,4 @@
-package com.aluracursos.screenmatch26;
+/*package com.aluracursos.screenmatch26;
 
 
 import com.aluracursos.screenmatch26.principal.Inicio2;
@@ -24,4 +24,4 @@ public class Screenmatch26ApplicationConsola implements CommandLineRunner {
         inicio.muestraElMenu2();
 
         }
-}
+}*/
