@@ -10,14 +10,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class Screenmatch26Application {
+public class Screenmatch26ApplicationConsola implements CommandLineRunner {
 
-
+	@Autowired
+    private SerieRepository repository;
     public static void main(String[] args) {
-		SpringApplication.run(Screenmatch26Application.class, args);
+		SpringApplication.run(Screenmatch26ApplicationConsola.class, args);
 	}
 
-
+    @Override
+    public void run(String... args) throws Exception {
+        Inicio2 inicio = new Inicio2(repository);
+        inicio.muestraElMenu2();
 
         }
-
+}
