@@ -31,4 +31,9 @@ public class SerieController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("/inicio")
+    public String muestraMensaje() {
+        return "Serie inicio de temporada";
+    }
+
 }
