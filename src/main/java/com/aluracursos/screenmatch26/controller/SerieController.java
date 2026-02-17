@@ -5,6 +5,7 @@ import com.aluracursos.screenmatch26.repository.SerieRepository;
 import com.aluracursos.screenmatch26.service.SerieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,5 +33,11 @@ public class SerieController {
     public List<SerieDTO> ObtenerLanzamientosMasRecientes(){
         return serie.obtenerLanzamientosMasRecientes();
     }
+
+    @GetMapping("/{id}")
+    public SerieDTO obtenerPorID(@PathVariable Long id){
+        return serie.obtenerPorID(id);
+    }
+
 
 }
